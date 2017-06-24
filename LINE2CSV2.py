@@ -21,7 +21,7 @@ def main(file):
 	message=[]
 	author=[]
 	g=open(file[:-4]+'_2.csv','w')
-	g.write('datetime\tauthor\tmessage\n')
+	g.write('date\ttime\tauthor\tmessage\n')
 	while t: 
 		s=t.split("\t")
 		if len(s)==1: 
@@ -34,11 +34,16 @@ def main(file):
 				message.append(str(s[0]))
 		else:
 		#time author message
-			time.append(str(s[0]))
-			author.append(str(s[1]))
-			message.append(str(s[2]))
+		  time.append(str(s[0]))
+		  print(date[len(date)-1][:-1])
+		  print(time[len(time)-1])
+		  author.append(str(s[1]))
+		  print(author[len(author)-1])
+		  message.append(str(s[2]))
+		  message2=str(message[len(message)-1][:-1]).replace("\"", "")
+		  print(message2)
 		if not len(time)==0:
-			g.write(date[len(date)-1]+' '+time[len(time)-1]+'\t'+author[len(author)-1]+'\t'+message[len(message)-1]+'\n')
+			g.write(date[len(date)-1][:-1]+'\t'+time[len(time)-1]+'\t'+author[len(author)-1]+'\t'+message2)#+'\n')
 		t=f.readline()
 	f.close()
 	g.close()

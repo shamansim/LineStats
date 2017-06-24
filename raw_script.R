@@ -7,12 +7,15 @@ require(tidyr)
 require(scales)
 require(magrittr)
 
-line.raw <- read.csv('../LINE/chat2.csv', sep = '\t', quote = "")
+line.raw <- read.csv('20170623HR_2.csv', sep = '\t', quote = "")
+
 line.raw$date %<>% dmy()
 # line.raw$time %<>% format(parse_date_time(.,"hm"), format="%H:%M") %>% hm()
 # line.raw$message %<>% as.character()
 line.raw$message %<>% as.factor()
 line.raw$day <- wday(line.raw$date, label = TRUE, abbr = FALSE)
+levels(line.raw$author) <- c("Hong-Ru", "Simon")
+
 summary(line.raw)
 
 # -------------------------------
@@ -26,14 +29,14 @@ nbmsgjr +
   geom_bar() +
   facet_grid(. ~ author) +
   theme_light() +
-  labs(x = "Jour de la semaine", y = "Nombre de messages", title = paste("Nombre de messages par jour du ",line.raw$date[1]," au ",line.raw$date[nrow(line.raw)]))
+  labs(x = "Day of the week", y = "Number of messages", title = paste("Number of messages per day from ",line.raw$date[1]," to ",line.raw$date[nrow(line.raw)]))
 # dev.off()
 
 # png("Maud_NbMessParJour.png", width = 700, height = 480)
 nbmsgjr +
   geom_bar(aes(fill = author)) +
   theme_light() +
-  labs(x = "Jour de la semaine", y = "Nombre de messages", title = paste("Nombre de messages par jour du ",line.raw$date[1]," au ",line.raw$date[nrow(line.raw)]))
+  labs(x = "Day of the week", y = "Number of messages", title = paste("Number of messages per day from ",line.raw$date[1]," to ",line.raw$date[nrow(line.raw)]))
 # dev.off()
 
 # -----------------------------
@@ -49,7 +52,7 @@ nbmsghm +
   theme_minimal() +
   scale_x_discrete(breaks = c("01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00","00:00"))+
   # scale_x_discrete(breaks = c("06:04","07:01","08:00","09:02","10:00","11:00","12:00","13:00","14:01","15:02","16:00","17:01","18:00","19:00","20:00","21:00","22:00","23:00","23:58"))+
-  labs(x = "Heures", y = "Nombre de messages", title = paste("Nombre de messages par heures du ",line.raw$date[1]," au ",line.raw$date[nrow(line.raw)], " Heure du Japon"))
+  labs(x = "Hours", y = "Number of messages", title = paste("Number of messages per hour from ",line.raw$date[1]," to ",line.raw$date[nrow(line.raw)]))
 # dev.off()
 
 # -----------------------------------------
@@ -64,7 +67,7 @@ nbmsghmday +
   theme_minimal() +
   scale_y_discrete(breaks = c("00:00","01:00","02:00","03:00","04:00","05:00","06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00","23:00")) +
   scale_x_datetime() +
-  labs(x = "Date", y = "Heure", title = paste("Heures des messages par date, du ",line.raw$date[1]," au ",line.raw$date[nrow(line.raw)], " Heure du Japon"))
+  labs(x = "Date", y = "Hour", title = paste("Hours of messages per date, from ",line.raw$date[1]," to ",line.raw$date[nrow(line.raw)]))
 # dev.off()
 
 # ---------------------------
@@ -151,7 +154,7 @@ nbmsgdate <- ggplot(line.raw, aes(x=date))
 nbmsgdate +
   geom_bar(aes(fill = author)) +
   theme_light() +
-  labs(x = "Date", y = "Nombre de messages", title = paste("Nombre de messages par date du ",line.raw$date[1]," au ",line.raw$date[nrow(line.raw)]))
+  labs(x = "Date", y = "Number of messages", title = paste("Number of messages per date from ",line.raw$date[1]," to ",line.raw$date[nrow(line.raw)]))
 # dev.off()
 
 # ----------------------------------------
@@ -160,7 +163,7 @@ nbmsgdate +
 
 ### Complete
 
-topSaid <- line.raw$message %>% summary %>% head(100)
+topSaid <- line.raw$message %>% summary %>% head(20)
 names(topSaid)
 datatopSaid <- line.raw[line.raw$message %in% names(topSaid), ]
 
